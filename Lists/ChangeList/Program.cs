@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Lists_Exercise___02._Change_List
+namespace ChangeList
 {
     class Program
     {
