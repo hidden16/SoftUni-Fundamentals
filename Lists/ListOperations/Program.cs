@@ -8,91 +8,70 @@ namespace ListOperations
     {
         static void Main(string[] args)
         {
-            List<int> numbers = Console.ReadLine()
-                .Split(' ')
-                .Select(int.Parse)
-                .ToList();
-
-            while (true)
+            List<int> Operations = Console.ReadLine().Split().Select(int.Parse).ToList();
+            string input = string.Empty;
+            while ((input = Console.ReadLine()) != "End")
             {
-                string input = Console.ReadLine();
-
-                if (input == "End")
+                string[] commands = input.Split();
+                string action = commands[0];
+                if (action == "Add")
                 {
-                    break;
+                    int task = int.Parse(commands[1]);
+                    Operations.Add(task);
                 }
-
-                string[] tokens = input.Split(' ');
-
-                if (tokens[0] == "Add")
+                else if (action == "Insert")
                 {
-                    int numberToAdd = int.Parse(tokens[1]);
-
-                    numbers.Add(numberToAdd);
-                }
-
-                if (tokens[0] == "Insert")
-                {
-                    int numberToInsert = int.Parse(tokens[1]);
-                    int index = int.Parse(tokens[2]);
-                    if (index > numbers.Count || index < 0)
+                    int task = int.Parse(commands[1]);
+                    int index = int.Parse(commands[2]);
+                    if (index >= 0 && index < Operations.Count)
                     {
-                        Console.WriteLine("Invalid index");
-                        continue;
-                    }
-
-                    numbers.Insert(index, numberToInsert);
-
-                }
-
-                if (tokens[0] == "Remove")
-                {
-                    int index = int.Parse(tokens[1]);
-                    if (index > numbers.Count || index < 0)
-                    {
-                        Console.WriteLine("Invalid index");
-                        continue;
-                    }
-                    numbers.RemoveAt(index);
-                }
-
-                if (tokens[0] == "Shift")
-                {
-                    int timesToShift = int.Parse(tokens[2]);
-
-                    if (tokens[1] == "left")
-                    {
-
-                        for (int i = 1; i < timesToShift % numbers.Count; i++)
-                        {
-                            int firstNum = numbers[0];
-
-                            for (int j = 0; j < numbers.Count - 1; j++)
-                            {
-                                numbers[j] = numbers[j + 1];
-                            }
-
-                            numbers[numbers.Count - 1] = firstNum;
-                        }
-
+                        Operations.Insert(index, task);
                     }
                     else
                     {
-                        for (int i = 0; i < timesToShift % numbers.Count; i++)
+                        Console.WriteLine("Invalid index");
+                    }
+                }
+                else if (action == "Shift")
+                {
+                    string direction = commands[1];
+                    if (direction == "left")
+                    {
+                        int task = int.Parse(commands[2]);
+                        while (task != 0)
                         {
-                            int lastNum = numbers[numbers.Count - 1];
-
-                            for (int j = numbers.Count - 1; j > 0; j--)
-                            {
-                                numbers[j] = numbers[j - 1];
-                            }
-
-                            numbers[0] = lastNum;
+                            int currentnumber = Operations[0];
+                            Operations.RemoveAt(0);
+                            Operations.Add(currentnumber);
+                            task--;
+                        }
+                    }
+                    else if (direction == "right")
+                    {
+                        int task = int.Parse(commands[2]);
+                        while (task != 0)
+                        {
+                            int currentnumber = Operations[Operations.Count - 1];
+                            Operations.RemoveAt(Operations.Count - 1);
+                            Operations.Insert(0, currentnumber);
+                            task--;
                         }
                     }
                 }
+                else if (action == "Remove")
+                {
+                    int task = int.Parse(commands[1]);
+                    if (task >= 0 && task < Operations.Count)
+                    {
+                        Operations.RemoveAt(task);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid index");
+                    }
+                }
             }
-            Console.WriteLine(string.Join(" ", numbers));
+            Console.WriteLine(String.Join(" ", Operations));
         }
     }
 }
