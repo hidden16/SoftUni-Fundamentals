@@ -1,2 +1,2 @@
 # SoftUni-Fundamentals
- Exercises
+  C#-Fundamentals-Exercises
